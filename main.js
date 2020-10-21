@@ -12,21 +12,23 @@ const styleMap = {
     9: 'tile-dark-gray'
 }
 
-let gridItems = Array(9).fill().map((_, i) => i + 1);
+let gridItems;
 let gridContainer;
 
 function init() {
-    gridContainer = getGridContainer();
-    if (gridContainer) {
-        renderGrid(gridContainer, gridItems);
-    }
+    gridItems = Array(9).fill().map((_, i) => i + 1);
+    renderGrid(gridItems);
 }
 
-function renderGrid(parentElement, gridItems) {
-    parentElement.innerHTML = '';
+function renderGrid(gridItems) {
+    const gridContainer = getGridContainer();
+    if (!gridContainer) {
+        return;
+    }
+    gridContainer.innerHTML = '';
     let gridContent = ''
     gridItems.forEach(number => gridContent += `<div class="grid-item ${styleMap[number]}">${number}</div>`);
-    parentElement.innerHTML = gridContent;
+    gridContainer.innerHTML = gridContent;
 }
 
 function shuffle() {
@@ -34,12 +36,12 @@ function shuffle() {
         const j = Math.floor(Math.random() * i);
         [gridItems[i], gridItems[j]] = [gridItems[j], gridItems[i]];
     }
-    renderGrid(getGridContainer(), gridItems);
+    renderGrid(gridItems);
 }
 
 function sort() {
     gridItems = gridItems.sort();
-    renderGrid(getGridContainer(), gridItems);
+    renderGrid(gridItems);
 }
 
 function getGridContainer() {
